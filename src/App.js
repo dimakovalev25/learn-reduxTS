@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useCallback, useState} from "react";
-import {castomerReducer} from "./store/castomerReducer";
+import {fetchCustomers} from "./asyncAction/customers";
 
 function App() {
     const state = useSelector(state => state.castomerReducer)
@@ -11,8 +11,8 @@ function App() {
     const customers = useSelector(state => state.castomerReducer.customers)
 
     const [customer, setCustomer] = useState('');
-    const [phoneCustomer, setPhone] = useState('');
-    console.log(customer, phoneCustomer)
+    const [email, setPhone] = useState('');
+    // console.log(customer, email)
 
     const onButtonRemove = () => {
         dispatch({type: 'REMOVE', payload: 5})
@@ -33,9 +33,9 @@ function App() {
     }, []);
 
     const onCustomerAdd = () => {
-        if (phoneCustomer.length > 4 && customer.length > 2) {
+        if (email.length > 4 && customer.length > 2) {
 
-            dispatch({type: 'ADD_CUSTOMER', payload: {name: customer, phoneCustomer: phoneCustomer, id: phoneCustomer}})
+            dispatch({type: 'ADD_CUSTOMER', payload: {name: customer, email: email, id: email}})
             setPhone('');
             setCustomer('');
 
@@ -46,9 +46,13 @@ function App() {
     }
 
     const onCustomerRemove = (customer) => {
-
         dispatch({type: 'REMOVE_CUSTOMER', payload: customer.id })
     }
+
+    // const onDownloadCustomers = () => {
+    //     // dispatch({type: 'ADD_CUSTOMERS'})
+    //     fetchCustomers()
+    // }
 
 
     return (
@@ -66,9 +70,12 @@ function App() {
             {customers.length > 0 ?
                 <div>
                     {customers.map(item =>
-                        <div onClick={() => onCustomerRemove(item)}>
-                            <h6>customer: {item.name}</h6>
-                            <h6>phone: {item.phoneCustomer}</h6>
+                        <div>
+                            <span>customer: {item.name} </span>
+                            <span> email: {item.email}</span>
+                            <button style={{margin: '5px'}} className="waves-effect waves-light btn"
+                                    onClick={() => onCustomerRemove(item)}>delete
+                            </button>
                             <br/>
                         </div>
                     )}
@@ -78,9 +85,11 @@ function App() {
             <button style={{margin: '5px'}} className="waves-effect waves-light btn" onClick={() => onCustomerAdd()}>add
                 customer
             </button>
-            <button style={{margin: '5px'}} className="waves-effect waves-light btn"
-                    onClick={() => onCustomerRemove()}>delete customer
+
+            <button style={{margin: '5px'}} className="waves-effect waves-light btn" onClick={() => dispatch(fetchCustomers())}>download
+                customers from server
             </button>
+
 
             <form className="col s12" onSubmit={onFormSubmit}>
                 <div className="row">
@@ -91,8 +100,8 @@ function App() {
                     </div>
                     <div className="input-field col s4">
                         <i className="material-icons prefix"></i>
-                        <input value={phoneCustomer} onChange={inputHandlerPhone} style={{margin: 0, padding: 0}} placeholder={'phone'}
-                               id="icon_telephone" type="tel" className="input validate"/>
+                        <input value={email} onChange={inputHandlerPhone} style={{margin: 0, padding: 0}} placeholder={'email'}
+                               id="icon_telephone" type="email" className="input validate"/>
                     </div>
                 </div>
             </form>
