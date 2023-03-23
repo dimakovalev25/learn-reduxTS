@@ -1,10 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useCallback, useState} from "react";
 import {fetchCustomers} from "./asyncAction/customers";
+import SagaComponent from "./components/Saga";
 
 function App() {
     const state = useSelector(state => state.castomerReducer)
-    console.log(state)
+    // console.log(state)
 
     const dispatch = useDispatch();
     const cash = useSelector(state => state.cashReducer.cash)
@@ -57,6 +58,7 @@ function App() {
 
     return (
         <div className="App">
+            <SagaComponent/>
             <h4>Money: {cash} $</h4>
             <button style={{margin: '5px'}} className="waves-effect waves-light btn" onClick={() => onButtonAdd()}>add
                 cash
