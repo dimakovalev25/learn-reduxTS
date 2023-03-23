@@ -4,8 +4,8 @@ import {useCallback, useState} from "react";
 function App() {
 
     const dispatch = useDispatch();
-    const cash = useSelector(state => state.cash)
-    const state = useSelector(state => state)
+    const cash = useSelector(state => state.cashReducer.cash)
+    const state = useSelector(state => state.cashReducer)
 
     console.log(state)
 
